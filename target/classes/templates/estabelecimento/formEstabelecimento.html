@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<meta name="description" content="" />
+	<meta name="author" content="" />
+	<title>ODIN</title>
+
+	<!-- Boostrap -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- Boostrap -->
+
+	<!--Google Fonts -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&family=Roboto:wght@300;500;700&display=swap"
+		rel="stylesheet">
+	<!--Google Fonts -->
+
+	<!-- Font Awesome -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+		integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+		crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<!-- Font Awesome -->
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+		integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+	<link href="/css/formEstabelecimento.css" rel="stylesheet" />
+</head>
+
+<body>
+
+	<div class="navigation">
+		<div id="logo">
+			<a href="/">
+				<p>ODIN</p>
+			</a>
+		</div>
+
+		<div class="caixaPesquisa">
+			<div class="pesquisa">
+				<input type="search" id="inputPesquisa" placeholder="Oque você busca ?">
+			</div>
+
+			<div class="listaProdutos">
+				<ul id="lista">
+
+				</ul>
+			</div>
+
+		</div>
+
+
+		<div class="links">
+			<ul>
+				<li><a href="/estabelecimento/cadastrar">Indicar um Local</a></li>
+				<li><a href="/estabelecimentos/todos">Estabelecimentos</a></li>
+				<li><a href="#" id="login">Login</a></li>
+				<li><a href="#" id="perfil">Meu Perfil</a></li>
+			</ul>
+		</div>
+
+
+
+	</div>
+
+
+	<div class="container px-4" id="estabelecimentoContainer">
+		<div class="row gx-4 justify-content-center">
+			<!-- Imagem do lado esquerdo -->
+			<div class="col-lg-4">
+				<img src="" id="imgEstabelecimento" alt="Imagem" class="img-fluid">
+			</div>
+			<!-- Texto descritivo do lado direito -->
+			<div class="col-lg-6" id="sobre">
+				<h2 id="titulo">Bar do juca</h2>
+				<p id="descricao">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut optio velit inventore,
+					expedita quo
+					laboriosam possimus ea consequatur vitae, doloribus consequuntur ex. Nemo assumenda laborum vel,
+					labore ut velit dignissimos Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi
+					cum ipsum doloribus a consequuntur veritatis totam illo, repellat placeat quaerat est cumque
+					reprehenderit non laboriosam veniam qui sapiente quisquam sequi.</p>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
+	<div id="acessibilidade">
+
+		<h2>Acessibilidade</h2>
+		<section class="services" id="services">
+			<div class="services-itens">
+				<div class="service-item" id="estacionamento">
+					<div class="service-item-image">
+						<img src="/images/estacionamento.png" alt="">
+					</div>
+					<h3>Estacionamento</h3>
+
+				</div>
+
+				<div class="service-item" id="rampa">
+					<div class="service-item-image">
+						<img src="/images/rampa.png" alt="">
+					</div>
+					<h3>Rampa</h3>
+				</div>
+
+				<div class="service-item" id="banheiro">
+					<div class="service-item-image">
+						<img src="/images/banheiro.jpeg" alt="">
+					</div>
+					<h3>Banheiro</h3>
+				</div>
+			</div>
+		</section>
+	</div>
+
+
+	<div id="linha-bolinha">
+		<div>
+			<div id="bolinha-red">
+			</div>
+			<small>Não possui</small>
+		</div>
+
+		<div>
+			<div id="bolinha-green">
+			</div>
+			<small>Possui</small>
+		</div>
+
+	</div>
+
+	<div id="caixaLocal">
+
+
+
+		<div id="caixaMedia">
+
+			<div id="localizaoTexto">
+				<h2>Localização</h2>
+				<p id="textoLocal"></p>
+			</div>
+
+			<div id="map" inert>
+
+			</div>
+		</div>
+
+
+		<div id="horarioLocal">
+
+			<div class="unit__option">
+
+
+				<p><i class="fa-regular fa-clock"></i> Horário de funcionamento</p>
+
+
+				<p id="diaHorario"><strong></strong></p>
+				<p id="horario">Almoço: 11:30h às 15h</p>
+			</div>
+
+			<div class="unit__option">
+
+				<p id><i class="fa-solid fa-phone"></i> Telefone</p>
+
+				<p id="telefone">(71) 3359-9000</p>
+			</div>
+
+		</div>
+
+
+
+	</div>
+
+
+
+
+	<!--Comentarios -->
+	<section class="content-item" id="comments">
+
+		<div id="comentariosBanco">
+
+			<div class="imgPerfil">
+				<img class="img-responsive" id="imgUsr" src="https://bootdey.com/img/Content/avatar/avatar1.png" alt="">
+			</div>
+			<div id="caixaComentario">
+				<textarea class="form-control" id="message" placeholder="Deixe sua opinião sobre o local"
+					required=""></textarea>
+				<button class="btn btn-normal pull-right" id="btnEnviar">Enviar</button>
+			</div>
+		</div>
+		<h3 id="numeroComentarios"></h3>
+
+		<div id="comentarios">
+
+		</div>
+
+
+	</section>
+
+	<!-- Footer-->
+	<footer class="py-5 bg-dark">
+		<div class="container px-4">
+			<p class="m-0 text-center text-white">Copyright &copy; ODIN Website 2023</p>
+		</div>
+	</footer>
+	<!-- Bootstrap core JS-->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Formatar Horas/Data -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+	<!-- Mapa -->
+	<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+		integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+
+
+	<script src="/js/scriptFormEstabelecimento.js"></script>
+
+
+</body>
+
+</html>
