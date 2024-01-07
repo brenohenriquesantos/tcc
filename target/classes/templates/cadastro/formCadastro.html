@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+	<title>ODIN - Cadastro</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<!-- Custom Theme files -->
+	<link href="css/cadastro.css" rel="stylesheet" type="text/css" media="all" />
+	<!-- web font -->
+	<link href="//fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i" rel="stylesheet">
+</head>
+
+<body>
+	<!-- main -->
+	<div class="main-w3layouts wrapper">
+		<div class="main-agileinfo">
+			<div class="agileits-top">
+				<div class="image-upload" id="divImg">
+					<label for="file-input">
+						<img id="imgPrincipal" src="" alt="Sua foto aqui" />
+					</label>
+
+					<input id="file-input" style="display: none;" type="file" accept="image/*" />
+				</div>
+				<form>
+					<input class="text" type="text" name="cpf" placeholder="Digite seu CPF" required="" id="cpf">
+					<input class="text email" type="text" name="nome" placeholder="Digite seu nome" required=""
+						id="nome">
+					<input class="text email" type="email" name="email" placeholder="Digite seu email" required=""
+						id="email">
+					<input class="text email" type="date" name="data" required="" id="data">
+					<input class="text" type="password" title="No minimo 8 caracteres" name="password"
+						placeholder="Digite sua senha" required="" id="senha">
+					<input class="text w3lpass" type="password" title="No minimo 8 caracteres" name="password"
+						placeholder="Confirme sua senha" required="" id="senhaConfirmar">
+					<input type="submit" value="Prosseguir" id="btnProsseguir">
+				</form>
+				<p>Já possui uma conta? <a href="/login"> Clique aqui para fazer login!</a></p>
+			</div>
+		</div>
+
+		<!-- copyright -->
+		<div class="colorlibcopy-agile">
+			<p id="copyright"></p>
+		</div>
+
+	</div>
+
+	<!-- mascara cpf -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+	<script src="js/scriptCadUsuario.js"></script>
+
+</body>
+
+</html>
