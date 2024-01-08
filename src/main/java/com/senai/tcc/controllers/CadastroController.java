@@ -26,7 +26,7 @@ public class CadastroController {
 
 	@GetMapping("/cadastro")
 	public String redirecionarForm1() {
-		return "templates/cadastro/formCadastro";
+		return "cadastro/formCadastro";
 	}
 
 	@GetMapping("/cadastro/")

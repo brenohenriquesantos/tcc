@@ -35,7 +35,7 @@ public class UsuarioController {
 
 	@GetMapping("/usuario/perfil/")
 	public String acessarPerfil() {
-		return "templates/perfil/perfil";
+		return "target/classes/templates/perfil/perfil.html";
 	}
 
 	@PutMapping("/usuario/atualizar")
