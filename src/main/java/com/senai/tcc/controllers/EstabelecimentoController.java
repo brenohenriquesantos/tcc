@@ -25,7 +25,7 @@ public class EstabelecimentoController {
 
 	@GetMapping("/estabelecimento/cadastrar")
 	public String cadastrar() {
-		return "/cadastro/formCadastroEstabelecimento.html";
+		return "/formCadastroEstabelecimento.html";
 	}
 
 	@GetMapping("/estabelecimentos/todos")
