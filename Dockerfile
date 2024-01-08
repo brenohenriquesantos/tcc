@@ -1,16 +1,9 @@
-FROM ubuntu:latest AS build
+FROM openjdk:17-jdk-alpine
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-COPY . .
+ARG JAR_FILE=target/*.jar
 
-RUN apt-get install maven -y
-RUN mvn clean install 
-
-FROM openjdk:17-jdk-slim
+COPY ./target/*.jar app.jar
 
 EXPOSE 8080
 
-COPY --from=build /target/*.jar app.jar
-
-ENTRYPOINT [ "java", "-jar", "app.jar" ]
+CMD ["java", "-jar", "/app.jar"]
