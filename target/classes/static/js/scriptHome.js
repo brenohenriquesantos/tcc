@@ -266,6 +266,8 @@ inputPesquisa.addEventListener('input', async (event) => {
 
 })
 
+// teste
+
 
 document.addEventListener('DOMContentLoaded', () => {
 	obterEstabs()
