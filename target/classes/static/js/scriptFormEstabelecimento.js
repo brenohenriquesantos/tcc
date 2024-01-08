@@ -25,6 +25,8 @@ let latitude = 0;
 let longitude = 0;
 let marker, circle, zoomed;
 
+let estabs;
+const listaPesquisaResult = document.querySelector('.listaProdutos');
 
 
 
@@ -41,6 +43,74 @@ map.on('click', (event) => {
 	console.log(event);
 
 })
+
+
+async function obterEstabs() {
+	try {
+		response = await fetch('/consultarEstabs');
+
+		if (!response.ok) {
+			erroMsg = await response.text();
+			throw Error(erroMsg);
+		}
+
+		estabs = await response.json();
+
+	} catch (error) {
+		console.log(erroMsg);
+	}
+
+}
+
+inputPesquisa.addEventListener('input', async (event) => {
+	const nomeAtual = event.target.value
+
+	if (nomeAtual) {
+		const retorno = await obterEstabsPorNome(nomeAtual);
+
+		if (retorno != null && retorno.length > 0) {
+
+			listaPesquisaResult.style = 'display:block';
+
+			const ul = document.querySelector('#lista');
+
+			ul.innerHTML = "";
+
+			ul.style = 'display:block';
+
+			for (i = 0; i < retorno.length; i++) {
+				const li = document.createElement("li");
+
+				li.innerHTML = `
+					<a href="/estabelecimento/?id=${retorno[i].id}">
+							<img width="80px" src="data:image/jpeg;base64,${retorno[i].fotoBase64}" alt="">
+							<span class="item-name">${retorno[i].nome}</span>
+					</a>
+		`;
+
+				ul.appendChild(li);
+			}
+		} else {
+			listaPesquisaResult.style = 'display:none';
+		}
+	} else {
+		listaPesquisaResult.style = 'display:none';
+	}
+
+})
+
+async function obterEstabsPorNome(nomeLocal) {
+
+	let estabsFiltrados = [];
+
+	estabsFiltrados = estabs.filter(dado => {
+		const regex = new RegExp(nomeLocal, 'i');
+		return regex.test(dado.nome);
+	});
+
+	return estabsFiltrados;
+
+}
 
 function verificarCookie(nomeCookie) {
 	var cookieValor = document.cookie.split(';').find(row => row.trim().startsWith(nomeCookie + '='));
@@ -335,6 +405,9 @@ function popularHorarioEstab(dados) {
 
 
 document.addEventListener('DOMContentLoaded', async () => {
+
+	obterEstabs();
+
 	const id = obterIdUrl();
 
 	verificarLogado();

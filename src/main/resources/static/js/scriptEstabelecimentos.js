@@ -9,6 +9,27 @@ const linkPerfil = document.querySelector('#perfil');
 const estadosSelect = document.querySelector('#estados');
 const cidadesSelect = document.querySelector('#cidades');
 
+let estabs;
+
+
+async function obterEstabs() {
+	try {
+		response = await fetch('/consultarEstabs');
+
+		if (!response.ok) {
+			erroMsg = await response.text();
+			throw Error(erroMsg);
+		}
+
+		estabs = await response.json();
+
+	} catch (error) {
+		console.log(erroMsg);
+	}
+
+}
+
+
 
 function verificarCookie(nomeCookie) {
 	var cookieValor = document.cookie.split(';').find(row => row.trim().startsWith(nomeCookie + '='));
@@ -63,6 +84,65 @@ linkLogin.addEventListener('click', () => {
 })
 
 
+function filtrarEstabs(filtros) {
+	let estabsFiltrados = estabs;
+
+	Object.entries(filtros).forEach(([filtro, valorFiltro]) => {
+		if (valorFiltro !== "" && valorFiltro !== undefined) {
+			estabsFiltrados = estabsFiltrados.filter(estab => {
+				if (filtro === 'nome') {
+					if (estab[filtro].toLowerCase().includes(valorFiltro.toLowerCase())) {
+						return true;
+					}
+					return false;
+				}
+
+				if ((filtro === 'uf' || filtro === 'localidade') && endereco) {
+					const endereco = estab.endereco;
+
+					if (endereco.uf === valorFiltro || endereco.localidade === valorFiltro) {
+						return true;
+					}
+					return false;
+				}
+
+				return estab[filtro] === valorFiltro;
+			});
+		}
+	});
+
+	return estabsFiltrados.slice(0, 3);
+}
+
+
+
+
+
+function popularEstabs() {
+
+	estabs.slice(0.3).forEach((item) => {
+		const caixaResult = document.createElement("div");
+
+		caixaResult.classList.add("caixaResult");
+
+		caixaResult.innerHTML = `
+					<div>
+						<a href="/estabelecimento/?id=${item.id}"><img src="data:image/jpeg;base64,${item.fotoBase64}"
+						 alt="imagem"></a>
+					</div>
+
+					<div class = "txtResult">
+						<h3>${item.nome}</h3>
+					</div>
+		`;
+
+		services.appendChild(caixaResult);
+	})
+}
+
+
+
+
 async function popularEstabsFiltrados() {
 
 	let banheiro, rampa, estacionamento;
@@ -84,36 +164,25 @@ async function popularEstabsFiltrados() {
 
 	const filtros = {
 		nome: document.querySelector('#inputPesquisa').value,
-		banheiro: banheiro,
-		rampa: rampa,
-		estacionamento: estacionamento,
+		banheiro_acessivel: banheiro,
+		rampa_acessivel: rampa,
+		estacionamento_acessivel: estacionamento,
 		uf: document.querySelector('#estados').value,
 		localidade: document.querySelector('#cidades').value
 	}
 
 
-	const res = await fetch('/consultarEstabsFiltrados', {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json"
-		},
-		body: JSON.stringify(filtros)
-	}
-	)
-
+	const dados = filtrarEstabs(filtros);
 	const services = document.querySelector('#services');
 
 	services.innerHTML = '';
 
-	if (res.ok) {
-		const dados = await res.json();
+	dados.forEach((item) => {
+		const caixaResult = document.createElement("div");
 
-		dados.forEach((item) => {
-			const caixaResult = document.createElement("div");
+		caixaResult.classList.add("caixaResult");
 
-			caixaResult.classList.add("caixaResult");
-
-			caixaResult.innerHTML = `
+		caixaResult.innerHTML = `
 					<div>
 						<a href="/estabelecimento/?id=${item.id}"><img src="data:image/jpeg;base64,${item.fotoBase64}"
 						 alt="imagem"></a>
@@ -124,14 +193,8 @@ async function popularEstabsFiltrados() {
 					</div>
 		`;
 
-			services.appendChild(caixaResult);
-		})
-	} else {
-		services.innerHTML = '';
-		
-		const erro = await res.text();
-		console.log(erro);
-	}
+		services.appendChild(caixaResult);
+	})
 }
 
 
@@ -245,8 +308,11 @@ estadosSelect.addEventListener('change', () => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-	popularEstabsFiltrados();
-	verificarLogado();
-	obterEstados();
+	obterEstabs().then(() => {
+		popularEstabs();
+		verificarLogado();
+		obterEstados();
+	})
+
 })
 

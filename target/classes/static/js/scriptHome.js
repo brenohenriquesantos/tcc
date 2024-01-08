@@ -5,6 +5,26 @@ const listaPesquisaResult = document.querySelector('.listaProdutos');
 const linkPerfil = document.querySelector('#perfil');
 const botoesFiltro = document.querySelectorAll('.filtro-btn');
 
+let estabs;
+
+
+async function obterEstabs() {
+	try {
+		response = await fetch('/consultarEstabs');
+
+		if (!response.ok) {
+			erroMsg = await response.text();
+			throw Error(erroMsg);
+		}
+
+		estabs = await response.json();
+
+	} catch (error) {
+		console.log(erroMsg);
+	}
+
+}
+
 function verificarCookie(nomeCookie) {
 	var cookieValor = document.cookie.split(';').find(row => row.trim().startsWith(nomeCookie + '='));
 
@@ -73,57 +93,28 @@ linkLogin.addEventListener('click', () => {
 
 })
 
-async function buscarEstabsFiltrados(idTipo) {
-	try {
-		let resposta = await fetch('/estabelecimento/acessadosFiltrados',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: idTipo,
-			});
+function buscarEstabsFiltrados(idTipo) {
+	let estabsFiltrados = [];
 
-		if (!resposta.ok) {
-			resposta = await resposta.text();
-			throw new Error(resposta);
+	estabs.forEach(dado => {
+		if (dado.tipoEstab.id === idTipo) {
+			estabsFiltrados.push(dado);
 		}
+	})
 
-		const dados = await resposta.json();
-
-		return dados;
-	} catch (erro) {
-		console.log(erro.message);
-	}
+	return estabsFiltrados.slice(0, 3);
 }
 
-async function buscarEstabs() {
-	try {
-		const response = await fetch('/estabelecimento/acessados');
 
-		if (!response.ok) {
-			throw new Error(response);
-		}
-
-		const dados = response.json();
-
-		return dados;
-	} catch (error) {
-		const erroMsg = await error.text();
-		console.log(erroMsg);
-	}
-}
 
 async function popularEstabelecimentos(idTipo) {
 	const services = document.querySelector('#services');
 
-	// Limpar o conteúdo anterior removendo todos os elementos filhos
 	services.innerHTML = '';
 
-	if (idTipo === undefined) {
-		const dados = await buscarEstabs();
+	if (idTipo === undefined || idTipo === 0) {
 
-		dados.forEach(dado => {
+		estabs.slice(0, 3).forEach(dado => {
 			const container = document.createElement('div');
 			container.classList.add('container', 'px-4');
 
@@ -163,7 +154,7 @@ async function popularEstabelecimentos(idTipo) {
 			descricaoCol.appendChild(descricao);
 		});
 	} else {
-		const dados = await buscarEstabsFiltrados(idTipo);
+		const dados = buscarEstabsFiltrados(idTipo);
 
 		dados.forEach(dado => {
 			const container = document.createElement('div');
@@ -224,29 +215,16 @@ function verificarAdm() {
 	const isAdm = sessionStorage.getItem('isAdm');
 }
 
-async function obterEstabs(nomeLocal) {
+async function obterEstabsPorNome(nomeLocal) {
 
-	try {
-		const resposta = await fetch('/consultarEstabNome', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: nomeLocal
-		});
+	let estabsFiltrados = [];
 
-		if (resposta.ok) {
-			const dados = await resposta.json();
+	estabsFiltrados = estabs.filter(dado => {
+		const regex = new RegExp(nomeLocal, 'i');
+		return regex.test(dado.nome);
+	});
 
-			return dados;
-		}
-
-		return null;
-	} catch (error) {
-		console.log('Erro ao consultar o estabelecimento com  o valor informado');
-	}
-
-
+	return estabsFiltrados;
 
 }
 
@@ -255,7 +233,7 @@ inputPesquisa.addEventListener('input', async (event) => {
 	const nomeAtual = event.target.value
 
 	if (nomeAtual) {
-		const retorno = await obterEstabs(nomeAtual);
+		const retorno = await obterEstabsPorNome(nomeAtual);
 
 		if (retorno != null && retorno.length > 0) {
 
@@ -290,11 +268,12 @@ inputPesquisa.addEventListener('input', async (event) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-	popularEstabelecimentos();
-
-	verificarLogado()
-	
-	botaoAtivo()
-	
-	verificarAdm();
+	obterEstabs()
+		.then(() => {
+			popularEstabelecimentos();
+			verificarLogado();
+			botaoAtivo();
+			verificarAdm();
+		})
+		.catch(error => console.error(error));
 })

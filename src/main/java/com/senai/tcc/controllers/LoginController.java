@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.senai.tcc.components.UsuarioAutenticator;
 import com.senai.tcc.services.CookieService;
+import com.senai.tcc.services.LimparCPF;
 import com.senai.tcc.services.UsuarioService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,13 +25,15 @@ public class LoginController {
 
 	@Autowired
 	UsuarioService usuarioService;
-
+	
+	@Transactional
 	@PostMapping("/login")
 	public ResponseEntity<?> fazerLogin(@RequestBody Map<String, String> credenciais, HttpServletResponse response) {
 
 		try {
 
 			String cpf = credenciais.get("cpf");
+			cpf = LimparCPF.limpar(cpf);
 			String senha = credenciais.get("senha");
 
 			UsuarioAutenticator usr = usuarioService.login(cpf, senha);

@@ -11409,6 +11409,7 @@ footer {
 	padding: 50px;
 	transition: ease .50s;
 	cursor: pointer;
+	width: 275px;
 }
 
 .service-item-image img {

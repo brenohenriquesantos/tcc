@@ -169,9 +169,9 @@ async function processarImagem() {
 	}
 }
 
-async function enviarDados(){
+async function enviarDados() {
 	const imagem = await processarImagem();
-	
+
 
 	const dadosJuntos = {
 		cpf: cpf.value,
@@ -189,16 +189,34 @@ async function enviarDados(){
 		},
 		body: JSON.stringify(dadosJuntos)
 	})
-	
-	if(!resposta.ok){
+
+	if (!resposta.ok) {
 		const erroTexto = await resposta.text();
 		alert(erroTexto);
 	}
-	
+
 	const msgSucesso = await resposta.text();
 	alert(msgSucesso);
-	window.location.href = "/";
-	
+
+	const credenciais = {
+		cpf: cpf.value,
+		senha: senha.value
+	}
+
+	const response = await fetch("/login", {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json"
+		},
+		body: JSON.stringify(credenciais)
+	})
+
+	const dados = await response.json();
+
+	sessionStorage.setItem("isAdm", dados.usrAdm);
+
+	window.location.href = '/';
+
 }
 
 

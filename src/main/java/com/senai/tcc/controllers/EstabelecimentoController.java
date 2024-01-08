@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -55,16 +56,18 @@ public class EstabelecimentoController {
 		}
 
 	}
-	
+
+	@Transactional
 	@GetMapping("/estabelecimento/acessados")
-	public ResponseEntity<?> acessados(){
+	public ResponseEntity<?> acessados() {
 		try {
 			return ResponseEntity.ok(estService.obterAcessados());
 		} catch (Exception e) {
 			return ResponseEntity.internalServerError().body(e.getMessage());
 		}
 	}
-
+	
+	@Transactional
 	@GetMapping("/estabelecimento/consultar")
 	public ResponseEntity<?> obterEstabelecimentoById(@RequestParam Long id) {
 		try {
@@ -97,7 +100,8 @@ public class EstabelecimentoController {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
-
+	
+	@Transactional
 	@PostMapping("/consultarEstabNome")
 	public ResponseEntity<?> consultarEstabPorNome(@RequestBody String nome) {
 		try {
@@ -108,8 +112,9 @@ public class EstabelecimentoController {
 			return ResponseEntity.internalServerError().body("Ocorreu um erro ao consultar");
 		}
 	}
-
-	@PostMapping("/consultarEstabs")
+	
+	@Transactional
+	@GetMapping("/consultarEstabs")
 	public ResponseEntity<?> consultarEstabs() {
 		try {
 			return ResponseEntity.ok(estService.obterEstabs());
@@ -119,14 +124,15 @@ public class EstabelecimentoController {
 			return ResponseEntity.internalServerError().body("Ocorreu um erro ao consultar");
 		}
 	}
-
+	
+	@Transactional
 	@PostMapping("/consultarEstabsFiltrados")
 	public ResponseEntity<?> consultarEstabsFiltrados(@RequestBody EstabFiltros filtros) {
 		try {
 			return ResponseEntity.ok(estService.obterEstabsFiltrado(filtros));
 		} catch (NotFoundEstabelecimentos e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-		}catch (Exception e) {
+		} catch (Exception e) {
 			return ResponseEntity.internalServerError().body(e.getMessage());
 		}
 
