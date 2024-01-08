@@ -232,6 +232,7 @@ function alterarBackgroundServices(dados) {
 			estacionamento.style = 'background: green';
 		} else {
 			estacionamento.style = 'transition: none';
+			estacionamento.style = 'background: #FF004D';
 		}
 
 		if (dados.rampa_acessivel === 'S') {
@@ -239,6 +240,7 @@ function alterarBackgroundServices(dados) {
 			rampa.style = 'background: green';
 		} else {
 			rampa.style = 'transition: none';
+			rampa.style = 'background: #FF004D';
 		}
 
 		if (dados.banheiro_acessivel === 'S') {
@@ -246,6 +248,7 @@ function alterarBackgroundServices(dados) {
 			banheiro.style = 'background: green';
 		} else {
 			banheiro.style = 'transition: none';
+			banheiro.style = 'background: #FF004D';
 		}
 	} else {
 
