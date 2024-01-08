@@ -218,18 +218,52 @@ async function obterEstabelecimento(id) {
 
 }
 
+function isMobileDevice() {
+	return /Mobi|Android/i.test(navigator.userAgent);
+}
+
 function alterarBackgroundServices(dados) {
-	if (dados.estacionamento_acessivel === 'S') {
-		estacionamento.classList.add('hover-green');
+
+
+	if (isMobileDevice()) {
+
+		if (dados.estacionamento_acessivel === 'S') {
+			estacionamento.style = 'transition: none';
+			estacionamento.style = 'background: green';
+		} else {
+			estacionamento.style = 'transition: none';
+		}
+
+		if (dados.rampa_acessivel === 'S') {
+			rampa.style = 'transition: none';
+			rampa.style = 'background: green';
+		} else {
+			rampa.style = 'transition: none';
+		}
+
+		if (dados.banheiro_acessivel === 'S') {
+			banheiro.style = 'transition: none';
+			banheiro.style = 'background: green';
+		} else {
+			banheiro.style = 'transition: none';
+		}
+	} else {
+
+		if (dados.estacionamento_acessivel === 'S') {
+			estacionamento.classList.add('hover-green');
+		}
+
+		if (dados.rampa_acessivel === 'S') {
+			rampa.classList.add('hover-green');
+		}
+
+		if (dados.banheiro_acessivel === 'S') {
+			banheiro.classList.add('hover-green');
+		}
 	}
 
-	if (dados.rampa_acessivel === 'S') {
-		rampa.classList.add('hover-green');
-	}
 
-	if (dados.banheiro_acessivel === 'S') {
-		banheiro.classList.add('hover-green');
-	}
+
 }
 
 function obterValorCookie(nomeCookie) {

@@ -120,7 +120,7 @@ function filtrarEstabs(filtros) {
 
 function popularEstabs() {
 
-	estabs.slice(0.3).forEach((item) => {
+	estabs.slice(0.2).forEach((item) => {
 		const caixaResult = document.createElement("div");
 
 		caixaResult.classList.add("caixaResult");
